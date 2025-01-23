@@ -1,0 +1,19 @@
+[project]
+name = "optimalisatie_route_peilbuizen"
+version = "0.1.0"
+description = "Bepaal snelste route langs alle peilbuizen in een project"
+authors = [
+    {name = "Jelle de Jong", email = "jelledejong@wdodelta.nl"},
+]
+dependencies = ["nbdev>=2.3.34"]
+requires-python = ">=3.10"
+readme = "README.md"
+license = {text = "MIT"}
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+
+[tool.pdm]
+distribution = true

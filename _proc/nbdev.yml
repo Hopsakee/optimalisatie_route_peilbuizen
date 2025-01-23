@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "optimalisatie_route_peilbuizen"
+  site-url: "https://Jelle de Jong.github.io/optimalisatie_route_peilbuizen"
+  description: "Bepaal de snelste route langs alle peilbuizen in een project"
+  repo-branch: main
+  repo-url: "https://github.com/Jelle de Jong/optimalisatie_route_peilbuizen"

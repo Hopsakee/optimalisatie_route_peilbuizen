@@ -1,0 +1,36 @@
+# Only trigger on master, we can upload a version once
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+strategy:
+  matrix:
+    Python38:
+      python.version: '3.8'
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '$(python.version)'
+    addToPath: true
+    architecture: 'x64'
+
+# Install python distributions like wheel, twine etc
+- script: python -m pip install --upgrade pip wheel setuptools twine
+  displayName: 'Install tools'
+
+# Build the python distribution from source
+- script: python setup.py sdist bdist_wheel
+  displayName: 'Build package'
+
+- task: TwineAuthenticate@1
+  inputs:
+    # Edit this to your Azure Devops (project-name), like this one is in 'Project Template',
+    # and a feed name. The feed you first have to create in devops, you can simply create one
+    # named master
+    artifactFeed: '(project-name)/(feed-name)'
+
+  # Edit the line below with the same feed name as picked above (e.g. master)
+- script: twine upload -r (feed-name) --config-file $(PYPIRC_PATH) dist/*.whl
+  displayName: 'Upload package'

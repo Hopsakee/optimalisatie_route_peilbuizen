@@ -32,14 +32,14 @@ Install latest from the GitHub
 [repository](https://github.com/Jelle%20de%20Jong/optimalisatie_route_peilbuizen):
 
 ``` sh
-$ pip install git+https://github.com/Jelle de Jong/optimalisatie_route_peilbuizen.git
+$ pip install git+https://github.com/Hopsakee/optimalisatie_route_peilbuizen.git
 ```
 
 or from
 [conda](https://anaconda.org/Jelle%20de%20Jong/optimalisatie_route_peilbuizen)
 
 ``` sh
-$ conda install -c Jelle de Jong optimalisatie_route_peilbuizen
+$ conda install -c Hopsakee optimalisatie_route_peilbuizen
 ```
 
 or from [pypi](https://pypi.org/project/optimalisatie_route_peilbuizen/)

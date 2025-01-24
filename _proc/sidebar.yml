@@ -1,6 +1,0 @@
-website:
-  sidebar:
-    contents:
-      - index.ipynb
-      - 00_main.ipynb
-      - 01_data_get.ipynb

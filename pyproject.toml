@@ -5,7 +5,7 @@ description = "Bepaal snelste route langs alle peilbuizen in een project"
 authors = [
     {name = "Jelle de Jong", email = "jelledejong@wdodelta.nl"},
 ]
-dependencies = ["nbdev>=2.3.34"]
+dependencies = ["nbdev>=2.3.34", "ipykernel>=6.29.5", "fastcore>=1.7.28", "WDODAzureSQL @ git+ssh://git@ssh.dev.azure.com/v3/wdodelta/DataHub/D0006_WDODAzureSQL", "openrouteservice>=2.3.3", "geopy>=2.4.1", "openpyxl>=3.1.5", "tqdm>=4.67.1"]
 requires-python = ">=3.10"
 readme = "README.md"
 license = {text = "MIT"}

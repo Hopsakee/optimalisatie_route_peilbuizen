@@ -1,5 +1,22 @@
 {
   "index.ipynb": {
-    "README.md": "81cc471d"
+    "README.md": "81cc471d",
+    "index.html": "228f4c62",
+    "index.html.md": "4d29e564"
+  },
+  "00_core.ipynb": {
+    "core.html": "e611da7c",
+    "core.html.md": "fd4307f5"
+  },
+  "00_main.ipynb": {
+    "main.html": "8bb9ae48",
+    "main.html.md": "f9675802"
+  },
+  "01_data_get.ipynb": {
+    "data_get.html": "17daa42e",
+    "data_get.html.md": "d911de9f"
+  },
+  "00_core copy.ipynb": {
+    "core copy.html": "01babede"
   }
 }

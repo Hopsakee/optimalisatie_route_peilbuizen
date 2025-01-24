@@ -1,0 +1,95 @@
+files:
+  path_peilbuizenshape_file : "/home/jelle/code/peilbuizen_route_optimalisatie/data/Grondwatermeetpunten/Grondwatermeetpunten_2024-10-10.shp"
+  path_pickle_results : "/home/jelle/code/peilbuizen_route_optimalisatie/data/pickles"
+  save_to_pickle : True # Save intermediate results to pickle file.
+  pickle_file_input : "/home/jelle/code/peilbuizen_route_optimalisatie/data/pickles/get_data_from_azuresql_20250124_130111.pickle" # Only needed if peilbuis data loaded from previously stored pickle file instead of retrieved from Azure
+  path_results: "/home/jelle/results/peilbuizen_route_optimalisatie"
+
+filters:
+  days_since_last_update : 200 # Filter peilbuien die meer dan X dagen geleden zijn geupdate.
+  projects : primair # Peilbuizen worden gefilterd op dit woord. Als kolom project dit woord bevat wordt het meegenomen in de analsye.
+
+calculation:
+  # Kies hoe de afstanden tussen punten berekend moeten worden.
+  # - driving-car
+  # - cycling-regular
+  distance_calculation_method : "cycling-regular"
+  startlocation : "Dokter van Deenweg 186, 8025 BM, Zwolle" # "hoofdkantoor" of ID van een peilbuis.
+
+azure:
+  # Configureer gegevens connectie met on-demand SQL database in Azure
+  jdbc_hostname : "wdodeuwprodsynoxgn02-ondemand.sql.azuresynapse.net"
+  jdbc_database : "Lakehouse"
+
+# Let op: In SQL Server Management Studio mag je ( en ) om de sql-statement zetten.
+# Dat kan niet met de D0006 package.
+# Verder is het verstandig om ' te gebruiken en niet "
+# Als je ' in de SQL query nodig hebt, escape die dan met \
+# De reden is dat " heel soms gedoe geeft.
+# Dus
+# and STA.station_status = \'Actueel\'\
+# en niet
+# and STA.station_status = \"Actueel\"\
+# en ook niet
+# and STA.station_status = "Actueel"\
+sql_statement:
+  tsid : "select [Site_Name]\
+        , [Site_Longname]\
+        , [Site_Number]\
+        , SI.[STAS_ID]\
+        , STA.[STA_ID]\
+        , [Station_name]\
+        , [Timeseries_name]\
+        , [TS_ID]\
+        , [WARECO_id]\
+        from [Datamart].[DIM_WDOD_STATIONS] ST\
+        , [Datamart].[DIM_WDOD_STATIONS_ATTRIBUTES] STA\
+        , [Datamart].[DIM_WDOD_SITES] SI\
+        , [Datamart].[DIM_WDOD_SITES_ATTRIBUTES] SIA\
+        , [Datamart].[DIM_WDOD_TIMESERIES] TE\
+        where ST.STA_ID = STA.STA_ID\
+        and  ST.STAS_ID = SI.STAS_ID\
+        and SI.STAS_ID = SIA.STAS_ID\
+        and ST.STAS_ID = SIA.STAS_ID\
+        and STA.station_status = 'Actueel'\
+        and SIA.databron = 'Wareco'\
+        and TE.STA_ID = ST.STA_ID\
+        and TE.Timeseries_Name in ('MomentaanAll', 'Handmeting.V', 'Handmeting')\
+        and TE.Parameter_type = 'WATHTE [m] [NAP] [GW]'\
+        "
+  tsvalues : "select [TS_ID], [TS_Date],\
+        [TS_TStamp_UTC], [TS_Status], [TS_Waarde]\
+        from [Datamart].[FCT_WDOD_WISKI_VALUES]\
+        where TS_ID in (\
+        select TE.TS_ID\
+        from\
+          [Datamart].[DIM_WDOD_STATIONS] ST\
+        , [Datamart].[DIM_WDOD_STATIONS_ATTRIBUTES] STA\
+        , [Datamart].[DIM_WDOD_SITES] SI\
+        , [Datamart].[DIM_WDOD_SITES_ATTRIBUTES] SIA\
+        , [Datamart].[DIM_WDOD_TIMESERIES] TE\
+        where ST.STA_ID = STA.STA_ID\
+        and ST.STAS_ID = SI.STAS_ID\
+        and SI.STAS_ID = SIA.STAS_ID\
+        and ST.STAS_ID = SIA.STAS_ID\
+        and STA.station_status = 'Actueel'\
+        and SIA.databron = 'Wareco'\
+        and TE.STA_ID = ST.STA_ID\
+        and TE.Timeseries_Name in ('MomentaanAll', 'Handmeting.V', 'Handmeting')\
+        and TE.Parameter_type = 'WATHTE [m] [NAP] [GW]')\
+        and datediff(MONTH, TS_Date, CURRENT_TIMESTAMP) < 24"
+  peilbuizen: |
+              SELECT Id = concat(st.Site_Name, ';',sta.STA_ID),
+                   Longitude = Global_WGS84_Longitude,
+                   latitude = Global_WGS84_Latitude,
+                   latest_measure_date = ts.Timeseries_MaxDate,
+                   project = CASE WHEN attr.Meetdoel_GWS = 1 THEN st_attr.WARECO_group
+                         WHEN attr.Meetdoel_GWS = 0 THEN COALESCE(attr.project1, attr.project2) END
+              FROM [Datamart].[DIM_WDOD_SITES] st 
+              left join [Datamart].[DIM_WDOD_SITES_ATTRIBUTES] attr on st.STAS_ID = attr.STAS_ID
+              left join [Datamart].[DIM_WDOD_STATIONS] sta on sta.STAS_ID = st.STAS_ID 
+              left join [Datamart].[DIM_WDOD_STATIONS_ATTRIBUTES] st_attr on sta.STA_ID = st_attr.STA_ID
+              left join [Datamart].[DIM_WDOD_TIMESERIES] ts on ts.STA_ID = sta.STA_ID
+              where ts.Parameter_type = 'WATHTE [cm] [PBBK] [GW]' and ts.Timeseries_shortname = 'hand.o' and st_attr.station_status = 'Actueel'
+  simpel: "SELECT * FROM [Datamart].[DIM_WDOD_SITES]"
+              

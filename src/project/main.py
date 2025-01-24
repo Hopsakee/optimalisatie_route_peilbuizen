@@ -137,7 +137,7 @@ def process_peilbuizen_routes(df: pd.DataFrame,
                 logger.error(error_msg)
 
 # %% ../../nbs/00_main.ipynb 14
-process_peilbuizen_routes(df= df_random_test,
+process_peilbuizen_routes(df=,
                          start_address=settings['calculation']['startlocation'],
                          route_profile=settings['calculation']['distance_calculation_method'],
                          output_dir=settings['files']['path_results'])

@@ -57,7 +57,7 @@ def get_data_from_azuresql(sql_statement=None, save_pickle=False):
 
     return peilbuizen_df
 
-# %% ../../nbs/01_data_get.ipynb 10
+# %% ../../nbs/01_data_get.ipynb 9
 def load_pickle(file_path):
     with open(file_path, 'rb') as f:
         obj = pickle.load(f)

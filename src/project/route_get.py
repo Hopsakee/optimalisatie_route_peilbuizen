@@ -20,12 +20,12 @@ from geopy.geocoders import Nominatim
 from .data_get import get_data_from_azuresql
 from .utils import load_settings
 
-# %% ../../nbs/02_route_get.ipynb 4
+# %% ../../nbs/02_route_get.ipynb 5
 # only used for testing while developping
 settings = load_settings()
 settings
 
-# %% ../../nbs/02_route_get.ipynb 5
+# %% ../../nbs/02_route_get.ipynb 6
 # Used to test
 from fastcore.utils import Path
 from .data_get import load_pickle
@@ -37,10 +37,10 @@ peilbuizen_df = load_pickle(file_path=Path(file_path) / file_name)
 df_grouped = peilbuizen_df.groupby('project')
 test_df = df_grouped.get_group('---')
 
-# %% ../../nbs/02_route_get.ipynb 6
+# %% ../../nbs/02_route_get.ipynb 7
 client = openrouteservice.Client(key=os.environ["OPENROUTESERVICE_KEY"])
 
-# %% ../../nbs/02_route_get.ipynb 8
+# %% ../../nbs/02_route_get.ipynb 9
 def get_lonlat_start_location(address: str = "Dokter van Deenweg 186, 8025 BM, Zwolle"):
     """Get the longitude and latitude coordinates from a given adress"""
     geolocator = Nominatim(user_agent="wdodelta_route_optimizer", timeout=10)
@@ -75,15 +75,15 @@ def df_to_longlat_tuple(df, longitude_column, latitude_column):
     return [(row[longitude_column], row[latitude_column]) for _, row in df.iterrows()]
 
 
-# %% ../../nbs/02_route_get.ipynb 9
+# %% ../../nbs/02_route_get.ipynb 10
 start_location = get_lonlat_start_location(settings['calculation']['startlocation'])
 start_location
 
-# %% ../../nbs/02_route_get.ipynb 10
+# %% ../../nbs/02_route_get.ipynb 13
 longlat_tpl = df_to_longlat_tuple(test_df, longitude_column="Longitude", latitude_column="latitude")
 longlat_tpl
 
-# %% ../../nbs/02_route_get.ipynb 13
+# %% ../../nbs/02_route_get.ipynb 16
 def create_optimized_route(start_address: str,
                            df: pd.DataFrame,
                            route_profile: str,
@@ -100,10 +100,12 @@ def create_optimized_route(start_address: str,
                            optimize_waypoints=True,
                            instructions=False,
                            geometry=True,
-                           format='geojson')
+                           format='geojson',
+                           preference='fastest',
+                           radiuses=-1) # Don't restrict radius to search for routepoint near peilbuis
 
 
-# %% ../../nbs/02_route_get.ipynb 14
+# %% ../../nbs/02_route_get.ipynb 21
 optimal_route = create_optimized_route(start_address=settings['calculation']['startlocation'],
                                        route_profile=settings['calculation']['distance_calculation_method'],
                                        df=test_df)

@@ -121,6 +121,7 @@ def process_peilbuizen_routes(df: pd.DataFrame,
             print(msg)
             logger.info(msg)
         else:
+            #TODO: Als deze functie een error returned, dus geen route vindt, komt dat niet in logfiles.
             try:
                 create_group_route(
                     start_address=start_address,
@@ -136,7 +137,7 @@ def process_peilbuizen_routes(df: pd.DataFrame,
                 print(error_msg)
                 logger.error(error_msg)
 
-# %% ../../nbs/00_main.ipynb 14
+# %% ../../nbs/00_main.ipynb 19
 process_peilbuizen_routes(df=peilbuizen_df,
                          start_address=settings['calculation']['startlocation'],
                          route_profile=settings['calculation']['distance_calculation_method'],

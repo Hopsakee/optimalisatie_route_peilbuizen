@@ -108,6 +108,11 @@ Voor vragen of suggesties, neem contact op met: - Jelle de Jong
 
 ### Documentation
 
-Documentation can be found hosted on this GitHub
-[repository](https://github.com/Hopsakee/optimalisatie_route_peilbuizen)’s
-[pages](https://Hopsakee.github.io/optimalisatie_route_peilbuizen/).
+Documentatie kan hier niet gevonden worden. Documentation can be found
+hosted on this GitHub
+[repository](https://github.com/Jelle%20de%20Jong/optimalisatie_route_peilbuizen)’s
+[pages](https://Jelle%20de%20Jong.github.io/optimalisatie_route_peilbuizen/).
+Additionally you can find package manager specific guidelines on
+[conda](https://anaconda.org/Jelle%20de%20Jong/optimalisatie_route_peilbuizen)
+and [pypi](https://pypi.org/project/optimalisatie_route_peilbuizen/)
+respectively.

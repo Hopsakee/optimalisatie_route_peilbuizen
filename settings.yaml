@@ -1,8 +1,8 @@
 files:
-  path_peilbuizenshape_file : "/home/jelle/code/peilbuizen_route_optimalisatie/data/Grondwatermeetpunten/Grondwatermeetpunten_2024-10-10.shp"
-  path_pickle_results : "/home/jelle/code/peilbuizen_route_optimalisatie/data/pickles"
-  save_to_pickle : True # Save intermediate results to pickle file.
+  use_pickle_input: True # True: use stored pickle file. False: retrieve new data from Azure SQL database.
   pickle_file_input : "/home/jelle/code/peilbuizen_route_optimalisatie/data/pickles/get_data_from_azuresql_20250124_130111.pickle" # Only needed if peilbuis data loaded from previously stored pickle file instead of retrieved from Azure
+  save_to_pickle : True # Save intermediate results to pickle file.
+  path_pickle_results : "/home/jelle/code/peilbuizen_route_optimalisatie/data/pickles"
   path_results: "/home/jelle/results/peilbuizen_route_optimalisatie"
 
 filters:

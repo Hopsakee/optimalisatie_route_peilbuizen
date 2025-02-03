@@ -51,7 +51,7 @@ def get_lonlat_start_location(address: str = "Dokter van Deenweg 186, 8025 BM, Z
             print(f"Error: Unexpected error during geocoding - {str(e)}")
             return None
 
-# %% ../../nbs/02_route_get.ipynb 11
+# %% ../../nbs/02_route_get.ipynb 12
 def df_to_longlat_tuple(df, longitude_column, latitude_column):
     """Get the longitude and latitude coordinates from all rows in a pandas dataframe
     and return a list of longitude, latitude tuples"""
